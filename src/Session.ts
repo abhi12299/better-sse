@@ -1,6 +1,9 @@
 import {randomBytes} from "crypto";
 import serialize, {SerializerFunction} from "./lib/serialize";
 import sanitize, {SanitizerFunction} from "./lib/sanitize";
+import Channel from "./Channel";
+
+const defaultChannel = new Channel();
 
 export interface SessionOptions {
 	/**
@@ -47,6 +50,8 @@ export interface SessionOptions {
  * Once extended via an adapter, a middleware can call upon the subclassed Session which then performs the program logic that is made compatible with the framework.
  */
 abstract class Session {
+	readonly uId = randomBytes(4).toString("hex");
+
 	/**
 	 * The last ID sent to the client.
 	 * This is initialized to the last event ID given by the user, and otherwise is equal to the last number given to the `.id` method.
